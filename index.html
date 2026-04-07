@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Continuity Tool</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <h1>The Continuity Tool</h1>
+      <p>
+        Review whether a new entry is likely new, duplicate, or related to an existing record.
+      </p>
+    </header>
+
+    <main class="grid">
+      <section class="panel">
+        <h2>New Entry</h2>
+        <div class="form-group">
+          <label for="subjectName">Subject Name</label>
+          <input id="subjectName" type="text" value="Jordan Lee" />
+        </div>
+
+        <div class="form-group">
+          <label for="dob">Date of Birth</label>
+          <input id="dob" type="date" value="2012-03-15" />
+        </div>
+
+        <div class="form-group">
+          <label for="location">Address or Location</label>
+          <input id="location" type="text" value="125 North Street" />
+        </div>
+
+        <div class="form-group">
+          <label for="sourceType">Source Type</label>
+          <select id="sourceType">
+            <option>Source A</option>
+            <option selected>Source B</option>
+            <option>Source C</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="eventDate">Event Date</label>
+          <input id="eventDate" type="date" value="2026-04-06" />
+        </div>
+
+        <div class="form-group">
+          <label for="summary">Summary</label>
+          <textarea id="summary" rows="4">Follow-up information related to a prior event at the same address.</textarea>
+        </div>
+
+        <button id="checkBtn">Check Continuity</button>
+      </section>
+
+      <section class="panel">
+        <h2>Existing Records</h2>
+
+        <div class="record-card">
+          <h3>Record A</h3>
+          <p><strong>Name:</strong> Jordan Lee</p>
+          <p><strong>DOB:</strong> 2012-03-15</p>
+          <p><strong>Location:</strong> 125 N Street</p>
+          <p><strong>Event Date:</strong> 2026-04-05</p>
+          <p><strong>Summary:</strong> Initial report involving the same household.</p>
+        </div>
+
+        <div class="record-card">
+          <h3>Record B</h3>
+          <p><strong>Name:</strong> J. Lee</p>
+          <p><strong>DOB:</strong> 2012-03-15</p>
+          <p><strong>Location:</strong> 440 South Ave</p>
+          <p><strong>Event Date:</strong> 2026-03-20</p>
+          <p><strong>Summary:</strong> Separate report with limited matching context.</p>
+        </div>
+
+        <div class="record-card">
+          <h3>Record C</h3>
+          <p><strong>Name:</strong> Taylor Green</p>
+          <p><strong>DOB:</strong> 2011-09-02</p>
+          <p><strong>Location:</strong> 125 North Street</p>
+          <p><strong>Event Date:</strong> 2026-04-01</p>
+          <p><strong>Summary:</strong> Related location but different subject.</p>
+        </div>
+      </section>
+
+      <section class="panel result-panel">
+        <h2>Continuity Result</h2>
+        <div id="resultState" class="result-state">
+          <p>Run the continuity check to view the recommended classification.</p>
+        </div>
+
+        <div id="resultDetails" class="hidden">
+          <div class="status-badge" id="classificationBadge">Possible Related / Supplemental</div>
+          <p class="score"><strong>Continuity Score:</strong> <span id="matchScore">86%</span></p>
+
+          <div class="matched-fields">
+            <h3>Matched Signals</h3>
+            <ul id="matchedFieldsList">
+              <li>Name similarity matched</li>
+              <li>Date of birth matched</li>
+              <li>Location similarity matched</li>
+              <li>Event date is within 1 day</li>
+              <li>Summary contains related contextual terms</li>
+            </ul>
+          </div>
+
+          <div class="recommendation">
+            <h3>Recommendation</h3>
+            <p id="recommendationText">Review existing record before creating a new one.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Version 1 prototype • Workflow integrity demonstration</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
