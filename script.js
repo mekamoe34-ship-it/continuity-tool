@@ -1,43 +1,91 @@
 document.getElementById("checkBtn").addEventListener("click", function () {
-  const name = document.getElementById("subjectName").value.toLowerCase();
-  const dob = document.getElementById("dob").value;
-  const location = document.getElementById("location").value.toLowerCase();
-  const summary = document.getElementById("summary").value.toLowerCase();
+  const newEntry = {
+    name: document.getElementById("subjectName").value.toLowerCase(),
+    dob: document.getElementById("dob").value,
+    location: document.getElementById("location").value.toLowerCase(),
+    summary: document.getElementById("summary").value.toLowerCase()
+  };
 
-  let score = 0;
-  let matches = [];
+  const records = [
+    {
+      name: "jordan lee",
+      dob: "2012-03-15",
+      location: "125 n street",
+      summary: "initial report involving the same household"
+    },
+    {
+      name: "j lee",
+      dob: "2012-03-15",
+      location: "440 south ave",
+      summary: "separate report"
+    },
+    {
+      name: "taylor green",
+      dob: "2011-09-02",
+      location: "125 north street",
+      summary: "related location"
+    }
+  ];
 
-  // Simple matching logic (V1 prototype)
-  if (name.includes("jordan")) {
-    score += 25;
-    matches.push("Name similarity matched");
-  }
+  let bestScore = 0;
+  let bestMatchSignals = [];
 
-  if (dob === "2012-03-15") {
-    score += 25;
-    matches.push("Date of birth matched");
-  }
+  records.forEach(record => {
+    let score = 0;
+    let signals = [];
 
-  if (location.includes("125")) {
-    score += 20;
-    matches.push("Location similarity matched");
-  }
+    // Name similarity (basic)
+    if (newEntry.name === record.name) {
+      score += 30;
+      signals.push("Exact name match");
+    } else if (
+      newEntry.name.includes(record.name.split(" ")[0]) ||
+      record.name.includes(newEntry.name.split(" ")[0])
+    ) {
+      score += 15;
+      signals.push("Partial name match");
+    }
 
-  if (summary.includes("prior") || summary.includes("follow-up")) {
-    score += 16;
-    matches.push("Summary contains related contextual terms");
-  }
+    // DOB match
+    if (newEntry.dob === record.dob) {
+      score += 25;
+      signals.push("Date of birth matched");
+    }
 
-  // Determine classification
+    // Location match (loose)
+    if (
+      newEntry.location.includes("125") &&
+      record.location.includes("125")
+    ) {
+      score += 20;
+      signals.push("Location similarity matched");
+    }
+
+    // Summary context
+    if (
+      newEntry.summary.includes("prior") ||
+      newEntry.summary.includes("follow")
+    ) {
+      score += 10;
+      signals.push("Context suggests continuation");
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatchSignals = signals;
+    }
+  });
+
+  // Classification logic
   let classification = "Likely New Record";
   let recommendation = "Proceed with creating a new record.";
 
-  if (score >= 70) {
+  if (bestScore >= 60) {
     classification = "Possible Related / Supplemental";
     recommendation = "Review existing record before creating a new one.";
   }
 
-  if (score >= 85) {
+  if (bestScore >= 80) {
     classification = "Possible Duplicate";
     recommendation = "Strong match found. Likely duplicate entry.";
   }
@@ -47,14 +95,14 @@ document.getElementById("checkBtn").addEventListener("click", function () {
   document.getElementById("resultDetails").classList.remove("hidden");
 
   document.getElementById("classificationBadge").innerText = classification;
-  document.getElementById("matchScore").innerText = score + "%";
+  document.getElementById("matchScore").innerText = bestScore + "%";
 
   const list = document.getElementById("matchedFieldsList");
   list.innerHTML = "";
 
-  matches.forEach((m) => {
+  bestMatchSignals.forEach(signal => {
     const li = document.createElement("li");
-    li.textContent = m;
+    li.textContent = signal;
     list.appendChild(li);
   });
 
